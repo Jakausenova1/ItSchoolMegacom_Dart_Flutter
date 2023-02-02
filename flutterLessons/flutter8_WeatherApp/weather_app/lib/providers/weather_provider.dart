@@ -4,7 +4,6 @@ import '../models/weather_model.dart';
 
 class WeatherProvider extends ChangeNotifier {
   WeatherModel? model;
-
   Future<void> getWeather({
     required String apiKey,
     required String location,
