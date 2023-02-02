@@ -5,16 +5,14 @@ import '../models/weather_model.dart';
 class WeatherProvider extends ChangeNotifier {
   WeatherModel? model;
 
-  Future<void> getWeather(
-      {required String apiKey,
-      required String lat,
-      required String lon}) async {
+  Future<void> getWeather({
+    required String apiKey,
+    required String location,
+  }) async {
     Dio dio = Dio();
     final getWeather = await dio.get(
-      "https://api.openweathermap.org/data/2.5/weather?lat=42.882004&lon=74.582748&appid=ecd90844dbbf9ac0ad94178ad6f8631f&units=metric",
+      "https://api.openweathermap.org/data/2.5/weather?q=$location&appid=e4fef53114583ed8a1e88b2cdee2eb2d&units=metric",
       queryParameters: {
-        "lat": lat,
-        "lon": lon,
         "appId": apiKey,
       },
     );

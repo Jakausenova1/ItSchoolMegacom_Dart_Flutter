@@ -10,14 +10,15 @@ class WeatherPage extends StatelessWidget {
   WeatherPage({super.key});
 
   String apiKey = "ecd90844dbbf9ac0ad94178ad6f8631f";
-  String lat = "42.882004";
-  String lon = "74.582748";
+  String location = "Bishkek";
+  // String lat = "42.882004";
+  // String lon = "74.582748";
 
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<WeatherProvider>();
 
-    vm.getWeather(apiKey: apiKey, lat: lat, lon: lon);
+    vm.getWeather(apiKey: apiKey, location: location);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.darkBlue,
@@ -53,7 +54,7 @@ class WeatherPage extends StatelessWidget {
               child: Image.asset(AppImages.cloud),
             ),
             Text(
-              "${vm.model?.main?.temp ?? "100"}°",
+              "${vm.model?.temp ?? "100"}°",
               style: AppFonts.w600s64.copyWith(color: AppColors.white),
               textAlign: TextAlign.center,
             ),
@@ -71,14 +72,14 @@ class WeatherPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Max.: ${vm.model?.main?.tempMax ?? "100"}",
+                  "Max.: ${vm.model?.tempMax ?? "100"}",
                   style: AppFonts.w400s18.copyWith(color: AppColors.white),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 Text(
-                  "Min.: ${vm.model?.main?.tempMin ?? "100"}",
+                  "Min.: ${vm.model?.tempMin ?? "100"}",
                   style: AppFonts.w400s18.copyWith(color: AppColors.white),
                 ),
               ],
@@ -104,7 +105,7 @@ class WeatherPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "${vm.model?.main?.pressure ?? "5"}%",
+                    "${vm.model?.pressure ?? "5"}%",
                     style: AppFonts.w700s14.copyWith(color: AppColors.white),
                   ),
                   const SizedBox(
@@ -116,7 +117,7 @@ class WeatherPage extends StatelessWidget {
                     color: AppColors.white,
                   ),
                   Text(
-                    "${vm.model?.main?.humidity ?? "90"}%",
+                    "${vm.model?.humidity ?? "90"}%",
                     style: AppFonts.w700s14.copyWith(color: AppColors.white),
                   ),
                   const SizedBox(
@@ -128,7 +129,7 @@ class WeatherPage extends StatelessWidget {
                     color: AppColors.white,
                   ),
                   Text(
-                    "${vm.model?.wind?.speed ?? "19"} km/h",
+                    "${vm.model?.wind ?? "19"} km/h",
                     style: AppFonts.w700s14.copyWith(color: AppColors.white),
                   ),
                 ],
@@ -157,7 +158,7 @@ class WeatherPage extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      "${vm.model?.main?.temp ?? "100"}°",
+                      "${vm.model?.temp ?? "100"}°",
                       style: AppFonts.w700s14.copyWith(color: AppColors.white),
                     ),
                     const SizedBox(
