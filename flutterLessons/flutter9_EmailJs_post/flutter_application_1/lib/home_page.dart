@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   final String serviceId = 'service_wlyn1a4';
   final String userId = 'jV2OcWdd24lBX50mJ';
   final String token = 'RKwfCwPfHNBOgTJNIPHO9';
+  String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +85,15 @@ class _HomePageState extends State<HomePage> {
                   text: 'E-mail',
                   hintText: 'yourmail@gmail.com',
                   controller: emailController,
+                  errorText: errorText,
+                  onChanged: (val) {
+                    if (val.contains('@') && val.isNotEmpty) {
+                      errorText = null;
+                    } else {
+                      errorText = "введите корректные данные";
+                    }
+                    setState(() {});
+                  },
                   suffix: const Icon(
                     Icons.message,
                     color: Colors.black,

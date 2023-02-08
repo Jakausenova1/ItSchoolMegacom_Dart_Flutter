@@ -8,6 +8,8 @@ class NameWidget extends StatelessWidget {
     this.suffix,
     required this.controller,
     required this.maxLine,
+    this.errorText,
+    this.onChanged,
   }) : super(key: key);
 
   final String text;
@@ -15,13 +17,17 @@ class NameWidget extends StatelessWidget {
   final Widget? suffix;
   final TextEditingController controller;
   final int maxLine;
+  final String? errorText;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onChanged,
       maxLines: maxLine,
       controller: controller,
       decoration: InputDecoration(
+          errorText: errorText,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
           ),
