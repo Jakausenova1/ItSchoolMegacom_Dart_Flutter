@@ -17,8 +17,10 @@ class _HomePageState extends State<HomePage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController messageController = TextEditingController();
-  final String tamplatedID = 'template_sj3u9tf';
+  final String templatedID = 'template_py1gz49';
   final String serviceId = 'service_wlyn1a4';
+  final String userId = 'jV2OcWdd24lBX50mJ';
+  final String token = 'RKwfCwPfHNBOgTJNIPHO9';
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +133,9 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    sendMessage();
+                  },
                   child: const Text("Enter", style: AppFonts.w600s28),
                 ),
               ),
@@ -144,13 +148,26 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> sendMessage() async {
     Dio dio = Dio();
-    final response =
-        await dio.post("https://api.emailjs.com/api/v1.0/email/send", data: {
-      'service_id': '',
-      'template_id': '',
-      'user_id': '',
-      'accessToken': '',
-      'template_params': '',
-    });
+    try {
+      final response = await dio.post(
+        "https://api.emailjs.com/api/v1.0/email/send",
+        data: {
+          'service_id': serviceId,
+          'template_id': templatedID,
+          'user_id': userId,
+          'accessToken': token,
+          'template_params': {
+            'name': nameController.text,
+            'lastName': lastNameController.text,
+            'email': emailController.text,
+            'phone': phoneController.text,
+            'message': messageController.text,
+          }
+        },
+      );
+      print(response);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
