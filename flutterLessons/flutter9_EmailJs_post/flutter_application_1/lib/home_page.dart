@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   onPressed: () {
-                    sendMessage();
+                    sendMessage(context: context);
                   },
                   child: const Text("Enter", style: AppFonts.w600s28),
                 ),
@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> sendMessage() async {
+  Future<void> sendMessage({required BuildContext context}) async {
     Dio dio = Dio();
     try {
       final response = await dio.post(
@@ -165,7 +165,19 @@ class _HomePageState extends State<HomePage> {
           }
         },
       );
-      print(response);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            const Text("Сообщение отправлено!"),
+            IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.close))
+          ],
+        ),
+      );
     } catch (e) {
       print(e.toString());
     }
