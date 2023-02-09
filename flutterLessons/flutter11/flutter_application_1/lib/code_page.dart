@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/assets/app_fonts.dart';
 import 'package:flutter_application_1/assets/app_images.dart';
-import 'package:flutter_application_1/code_page.dart';
 import 'package:flutter_application_1/widgets/text_field.dart';
 
-class WelcomePhone extends StatelessWidget {
-  const WelcomePhone({super.key});
+class CodePage extends StatelessWidget {
+  const CodePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,19 +66,14 @@ class WelcomePhone extends StatelessWidget {
                     width: 309,
                     height: 57,
                     child: TextFieldWidget(
-                      hintText: 'Phone',
+                      hintText: 'Code',
                     ),
                   ),
                   const SizedBox(
                     height: 50,
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const CodePage()));
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
