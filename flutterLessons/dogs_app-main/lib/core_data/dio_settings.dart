@@ -16,6 +16,16 @@ class DioSettings {
     ),
   );
 
+  Dio dioCat = Dio(
+    BaseOptions(
+      baseUrl: 'https://aws.random.cat/',
+      contentType: 'application/json',
+      headers: {'Accept': 'application/json'},
+      connectTimeout: const Duration(seconds: 20),
+      receiveTimeout: const Duration(seconds: 20),
+    ),
+  );
+
   void setup() async {
     final interceptors = dio.interceptors;
 

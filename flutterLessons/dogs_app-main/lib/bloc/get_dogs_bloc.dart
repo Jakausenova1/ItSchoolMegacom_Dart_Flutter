@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 part 'get_dogs_event.dart';
 part 'get_dogs_state.dart';
 
-class GetDogsBloc extends Bloc<GetDogsEvent, GetDogsState> {
+class GetDogsBloc extends Bloc<DataEvent, GetDogsState> {
   GetDogsBloc({required this.repo}) : super(GetDogsInitial()) {
     on<GetDataEvent>(
       (event, emit) async {

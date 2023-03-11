@@ -6,6 +6,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:numberpicker/numberpicker.dart';
 
+import '../bloc/bloc/get_cats_bloc.dart';
+
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
 
@@ -126,33 +128,36 @@ class CatsPage extends StatelessWidget {
                   }),
               ElevatedButton(
                 onPressed: () {
-                  // BlocProvider.of<GetCatsBloc>(context).add(
-                  //   GetDataEvent(
-                  //     count: 0,
-                  //   ),
-                  // );
+                  BlocProvider.of<GetCatsBloc>(context).add(
+                    GetDataEvent(
+                      count: 0,
+                    ),
+                  );
                 },
                 child: const Text('get image'),
               ),
             ],
           ),
           const SizedBox(height: 25),
-          // BlocBuilder<GetCatsBloc, GetCatsState>(
-          //   builder: (context, state) {
-          //     if (state is GetCatsSuccess) {
-          // return
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              height: 300,
-              decoration: const BoxDecoration(
-                color: Colors.green,
-              ),
-              // child: Image.network(
-              //   state.modelCats.file ?? '',
-              //   fit: BoxFit.fill,
-              // ),
-            ),
+          BlocBuilder<GetCatsBloc, GetCatsState>(
+            builder: (context, state) {
+              if (state is GetCatsSuccess) {
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    height: 300,
+                    decoration: const BoxDecoration(
+                      color: Colors.green,
+                    ),
+                    child: Image.network(
+                      state.modelCats.file ?? '',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
         ],
       ),
