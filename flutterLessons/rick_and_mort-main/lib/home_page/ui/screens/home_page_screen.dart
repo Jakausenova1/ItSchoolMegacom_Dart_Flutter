@@ -15,12 +15,26 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
+  final scrollController = ScrollController();
+  String nextPage = '';
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.offset >=
+              scrollController.position.maxScrollExtent &&
+          !scrollController.position.outOfRange) {
+        BlocProvider.of<GetCharacterCubit>(context).nextPage(nextPage);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<GetCharacterCubit>(context).getCharecter('');
     bool _onEditing = true;
     String _code = '';
-    String nextPage = '';
+    // String nextPage = '';
     String previusPage = '';
     String defaultImage =
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvsR0DsIbpVZojO0oLDL0ULtzowuzr8FbHwQ&usqp=CAU';
@@ -33,13 +47,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
             VerificationCode(
               textStyle: TextStyle(fontSize: 20.0, color: Colors.red[900]),
               keyboardType: TextInputType.number,
-              underlineColor: Colors
-                  .amber, // If this is null it will use primaryColor: Colors.red from Theme
+              underlineColor: Colors.amber,
               length: 4,
-              cursorColor:
-                  Colors.blue, // If this is null it will default to the ambient
-              // clearAll is NOT required, you can delete it
-              // takes any widget, so you can implement your design
+              cursorColor: Colors.blue,
               clearAll: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -76,24 +86,35 @@ class _HomePageScreenState extends State<HomePageScreen> {
               child: BlocBuilder<GetCharacterCubit, GetCharacterState>(
                 builder: (context, state) {
                   if (state is GetCharacterSuccess) {
+                    if (state.isSearch && scrollController.hasClients) {
+                      scrollController.jumpTo(0);
+                    }
                     nextPage = state.model.info?.next ??
                         'https://rickandmortyapi.com/api/character/?page=${state.model.info?.pages}';
                     previusPage = state.model.info?.prev ??
                         'https://rickandmortyapi.com/api/character/?page=1';
                     final model = state.model.results;
                     return ListView.builder(
+                      controller: scrollController,
                       shrinkWrap: true,
                       itemCount: state.model.results?.length,
                       itemBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: UserContainer(
-                          id: '${model?[index].id}',
-                          image: model?[index].image ?? defaultImage,
-                          name: model?[index].name ?? '',
-                          species: model?[index].species ?? '',
-                          gender: model?[index].gender ?? '',
-                          status: model?[index].status ?? '',
-                        ),
+                        child: index + 1 == model?.length
+                            ? const SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child:
+                                    Center(child: CircularProgressIndicator()),
+                              )
+                            : UserContainer(
+                                id: '${model?[index].id}',
+                                image: model?[index].image ?? defaultImage,
+                                name: model?[index].name ?? '',
+                                species: model?[index].species ?? '',
+                                gender: model?[index].gender ?? '',
+                                status: model?[index].status ?? '',
+                              ),
                       ),
                     );
                   }
@@ -115,22 +136,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 },
               ),
             ),
-            Row(
-              children: [
-                TextButton(
-                    onPressed: () {
-                      BlocProvider.of<GetCharacterCubit>(context)
-                          .nextPage(previusPage);
-                    },
-                    child: const Text('previus')),
-                TextButton(
-                    onPressed: () {
-                      BlocProvider.of<GetCharacterCubit>(context)
-                          .nextPage(nextPage);
-                    },
-                    child: const Text('next')),
-              ],
-            )
           ],
         ),
       ),

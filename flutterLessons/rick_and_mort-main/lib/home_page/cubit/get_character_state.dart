@@ -13,5 +13,6 @@ class LoadingState extends GetCharacterState {}
 
 class GetCharacterSuccess extends GetCharacterState {
   final CharacterModel model;
-  GetCharacterSuccess({required this.model});
+  final bool isSearch;
+  GetCharacterSuccess({required this.model, this.isSearch = false});
 }
