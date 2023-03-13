@@ -4,11 +4,9 @@ import 'package:dogs/repo/get_cats_repo.dart';
 import 'package:dogs/repo/get_dogs_repo.dart';
 import 'package:dogs/ui/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/bloc/get_cats_bloc.dart';
+import 'bloc/bloc/bloc/get_cats_bloc.dart';
 
 void main(List<String> args) {
   runApp(const MyApp());

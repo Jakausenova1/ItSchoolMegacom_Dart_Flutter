@@ -1,9 +1,9 @@
 part of 'get_dogs_bloc.dart';
 
 @immutable
-abstract class DataEvent {}
+abstract class GetDogsEvent {}
 
-class GetDataEvent extends DataEvent {
+class GetDataEvent extends GetDogsEvent {
   final int count;
   GetDataEvent({required this.count});
 }

@@ -1,12 +1,13 @@
 import 'package:dogs/bloc/get_dogs_bloc.dart';
 import 'package:dogs/button.dart';
+import 'package:dogs/repo/get_cats_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-import '../bloc/bloc/get_cats_bloc.dart';
+import '../bloc/bloc/bloc/get_cats_bloc.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -113,53 +114,55 @@ class CatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int currentVal = 1;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              NumberPicker(
-                  minValue: 1,
-                  maxValue: 50,
-                  value: currentVal,
-                  onChanged: (val) {
-                    currentVal = val;
-                  }),
-              ElevatedButton(
-                onPressed: () {
-                  BlocProvider.of<GetCatsBloc>(context).add(
-                    GetDataEvent(
-                      count: 0,
+    return BlocProvider(
+      create: (context) =>
+          GetCatsBloc(repo: RepositoryProvider.of<GetCatsRepo>(context)),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                NumberPicker(
+                    minValue: 1,
+                    maxValue: 50,
+                    value: currentVal,
+                    onChanged: (val) {
+                      currentVal = val;
+                    }),
+                ElevatedButton(
+                  onPressed: () {
+                    BlocProvider.of<GetCatsBloc>(context).add(
+                      GetCatsEventData(),
+                    );
+                  },
+                  child: const Text('get image'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 25),
+            BlocBuilder<GetCatsBloc, GetCatsState>(
+              builder: (context, state) {
+                if (state is GetCatsSuccess) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      height: 300,
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                      ),
+                      child: Image.network(
+                        state.model.file ?? '',
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   );
-                },
-                child: const Text('get image'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 25),
-          BlocBuilder<GetCatsBloc, GetCatsState>(
-            builder: (context, state) {
-              if (state is GetCatsSuccess) {
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    height: 300,
-                    decoration: const BoxDecoration(
-                      color: Colors.green,
-                    ),
-                    child: Image.network(
-                      state.modelCats.file ?? '',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-        ],
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

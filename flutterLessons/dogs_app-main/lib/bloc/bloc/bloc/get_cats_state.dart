@@ -6,8 +6,8 @@ abstract class GetCatsState {}
 class GetCatsInitial extends GetCatsState {}
 
 class GetCatsSuccess extends GetCatsState {
-  final CatsModel modelCats;
-  GetCatsSuccess({required this.modelCats});
+  final CatsModel model;
+  GetCatsSuccess({required this.model});
 }
 
 class GetCatsError extends GetCatsState {}
