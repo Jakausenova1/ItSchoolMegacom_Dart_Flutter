@@ -50,29 +50,43 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Widget? weather;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<CounterWeatherBloc, CounterWeatherStates>(
-        builder: (context, state) {
-          if (state is InitialState) {
-            return _counter(context, 0);
-          }
-
-          if (state is UpdateState) {
-            return _counter(context, state.counter);
-          }
-          if (state is WeatherSuccess) {
-            final model = BlocProvider.of<CounterWeatherBloc>(context).model;
-            if (model != null) {
-              weather = Text(
-                "${model.name}: ${model.main?.temp}",
-              );
-            }
-          }
-          return weather ?? Text('Погода :');
-        },
+      body: Column(
+        children: [
+          BlocBuilder<CounterWeatherBloc, CounterWeatherStates>(
+            builder: (context, state) {
+              if (state is WeatherSuccess) {
+                final model =
+                    BlocProvider.of<CounterWeatherBloc>(context).model;
+                if (model != null) {
+                  return Text(
+                    "${model.name}: ${model.main?.temp}",
+                  );
+                }
+              }
+              if (state is WeatherError) {
+                return const Text('Ошибка погоды :');
+              }
+              return const Text('Погода :');
+            },
+            buildWhen: (oldState, newState) {
+              return newState is WeatherSuccess || newState is WeatherError;
+            },
+          ),
+          BlocBuilder<CounterWeatherBloc, CounterWeatherStates>(
+            builder: (context, state) {
+              if (state is UpdateState) {
+                return _counter(context, state.counter);
+              }
+              return _counter(context, 0);
+            },
+            buildWhen: (oldState, newState) {
+              return newState is UpdateState;
+            },
+          ),
+        ],
       ),
     );
   }

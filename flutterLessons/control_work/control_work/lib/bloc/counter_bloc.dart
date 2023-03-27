@@ -34,7 +34,7 @@ class CounterWeatherBloc
 
   getWeather(event, emit) async {
     try {
-      final model = await repo.getWeather('');
+      final model = await repo.getWeather('Бишкек');
       emit(WeatherSuccess(model: model));
     } catch (e) {
       emit(WeatherError());
